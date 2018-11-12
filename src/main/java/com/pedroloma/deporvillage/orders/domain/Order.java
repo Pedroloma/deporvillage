@@ -4,17 +4,25 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Entity;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.stereotype.Controller;
+
+import com.pedroloma.deporvillage.orders.events.StatusEvent;
 
 //@Entity
-public class Order {
+@Controller
+public class Order implements ApplicationEventPublisherAware{
 
+	@javax.persistence.Id
 	private Long Id;
 	private BigDecimal totalAmount;
 	private Set<Item> items = new HashSet<Item>();
 	private Address addressShipping;
 	private Address addressBilling;
 	private Status status;
+	
+	private ApplicationEventPublisher publisher;
 
 	public Order() {
 	}
@@ -75,6 +83,8 @@ public class Order {
 
 	public void setStatus(Status status) {
 		this.status = status;
+//		StatusEvent event = new StatusEvent(this);
+//		publisher.publishEvent(event);
 	}
 
 	@Override
@@ -101,6 +111,11 @@ public class Order {
 
 	public void markDelivered() {
 		this.status = Status.DELIVERED;
+	}
+
+	@Override
+	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+		this.publisher = applicationEventPublisher;
 	}
 
 }

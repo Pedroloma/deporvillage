@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.pedroloma.deporvillage.orders.domain.Address;
 import com.pedroloma.deporvillage.orders.domain.Item;
 import com.pedroloma.deporvillage.orders.domain.Order;
+import com.pedroloma.deporvillage.orders.domain.Status;
 
 @Component
 public class Service {
@@ -39,6 +40,16 @@ public class Service {
 	public Order findOne(int i) {
 		for (Order order : orders) {
 			if (order.getId() == i) {
+				return order;
+			}
+		}
+		return null;
+	}
+
+	public Order updateStatus(int id) {
+		for (Order order : orders) {
+			if (order.getId() == id) {
+				order.setStatus(Status.values()[order.getStatus().ordinal() + 1]);
 				return order;
 			}
 		}
