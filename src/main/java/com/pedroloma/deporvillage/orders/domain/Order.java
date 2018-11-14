@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.data.annotation.Id;
@@ -12,6 +13,11 @@ import org.springframework.stereotype.Controller;
 
 import com.pedroloma.deporvillage.orders.events.ChangeStatusEvent;
 
+/**
+ * Clase Bean para los pedidos.
+ * @author pedro
+ *
+ */
 @Controller
 @Document
 public class Order implements ApplicationEventPublisherAware{
@@ -24,6 +30,8 @@ public class Order implements ApplicationEventPublisherAware{
 	private Address addressBilling;
 	private Status status;
 	
+
+	@Autowired
 	private ApplicationEventPublisher publisher;
 
 	public Order() {
@@ -85,7 +93,7 @@ public class Order implements ApplicationEventPublisherAware{
 
 	public void setStatus(Status status) {
 		this.status = status;
-//		publisher.publishEvent(new ChangeStatusEvent(this));
+		publisher.publishEvent(new ChangeStatusEvent(this));
 	}
 
 	@Override

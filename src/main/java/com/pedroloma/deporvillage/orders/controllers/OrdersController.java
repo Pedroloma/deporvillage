@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,42 +19,31 @@ import com.pedroloma.deporvillage.orders.domain.Order;
 import com.pedroloma.deporvillage.orders.domain.OrderNotFoundException;
 import com.pedroloma.deporvillage.orders.domain.Status;
 import com.pedroloma.deporvillage.orders.repository.OrderRepository;
-import com.pedroloma.deporvillage.orders.repository.Service;
 
 @RestController
 public class OrdersController {
 
-	@Autowired
-	private Service service;
-	
+	// Conexión a la base de datos MongoDB.
 	@Autowired
 	private OrderRepository orderRepository;
 	
 	/**
-	 * Devuelve todas las órdenes.
+	 * Devuelve todos los pedidos.
 	 * @return
 	 */
 	@GetMapping("/orders")
 	public List<Order> listOfOrders() {
-//		return service.getAll();
-//		orderRepository.save(new Order(Long.valueOf(1), new BigDecimal(100), new Item(1,new BigDecimal(10),1), new Address(), new Address()));
-//		orderRepository.save(new Order(Long.valueOf(2), new BigDecimal(200), new Item(2,new BigDecimal(11),2), new Address(), new Address()));
-//		orderRepository.save(new Order(Long.valueOf(3), new BigDecimal(300), new Item(3,new BigDecimal(12),3), new Address(), new Address()));
-//		orderRepository.save(new Order(Long.valueOf(4), new BigDecimal(300), new Item(3,new BigDecimal(12),3), new Address(), new Address()));
-
 		return orderRepository.findAll();
-
 	}
 	
 	/**
-	 * Devuelve la orden del identificador.
+	 * Devuelve el pedido del identificador.
 	 * @param id
 	 * @return
 	 */
 	@GetMapping("/orders/{id}")
-	public Order getOrder(@PathVariable int id) {
-//		Order user = service.findOne(id);
-		Optional<Order> user = orderRepository.findById(Long.valueOf(id));
+	public Order getOrder(@PathVariable Long id) {
+		Optional<Order> user = orderRepository.findById(id);
 		if (user == null)
 			throw new OrderNotFoundException("Id - " + id);
 			
@@ -61,32 +51,60 @@ public class OrdersController {
 	}
 
 	/**
-	 * Inserta la orden
+	 * Inserta el pedido.
 	 * @param order
 	 * @return
 	 */
 	@PostMapping("/orders")
 	public ResponseEntity<Object> newOrder(@RequestBody Order order) {
-//		Order savedOrder = service.save(order);
-		order.setId(orderRepository.count()+1);
+		long id = orderRepository.count();
+		while (orderRepository.existsById(++id)) {}
+			
+		order.setId(id);
 		Order savedOrder = orderRepository.save(order);
 		URI uriLocation =  ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedOrder.getId()).toUri();
 		
 		return ResponseEntity.created(uriLocation).build();
 	}
 	
+	/**
+	 * Actualiza el pedido al siguiente estado.
+	 * @param id
+	 * @return
+	 */
 	@PutMapping("/orders/{id}")
-	public Order updateStatus(@PathVariable int id) {
-//		Order order = service.updateStatus(id);
-		Optional<Order> order = orderRepository.findById(Long.valueOf(id));
+	public Order updateStatus(@PathVariable Long id) {
+		Optional<Order> order = orderRepository.findById(id);
 		if (!order.isPresent())
 			throw new OrderNotFoundException("Id - " + id);
 
+		if (order.get().getStatus().ordinal() == Status.DELIVERED.ordinal())
+			throw new IllegalStateException("Order has already been delireved.");
+		
+		//Avanzamos el pedido al estado siguiente.
 		order.get().setStatus(Status.values()[order.get().getStatus().ordinal() + 1]);
 		orderRepository.save(order.get());
 			
 		return order.get();
 		
+	}
+	
+	/**
+	 * Borra el pedido.
+	 * @param id
+	 */
+	@DeleteMapping("/orders/{id}")
+	public void deleteOrder(@PathVariable Long id) {
+		Optional<Order> order = orderRepository.findById(id);
+		if (!order.isPresent())
+			throw new OrderNotFoundException("Id - " + id);
+		
+		// Sólo permitimos borrar si todavía no está confirmado. 
+		//A partir de ese estado, no se puede borrar un pedido.
+		if (order.get().getStatus().ordinal() > Status.PENDING_CONFIRMANTION.ordinal())
+			throw new IllegalStateException("Only orders pending of confirmation can be removed.");
+		
+		orderRepository.deleteById(id);
 	}
 
 }
