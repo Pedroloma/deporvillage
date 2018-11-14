@@ -6,16 +6,18 @@ import java.util.Set;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Controller;
 
-import com.pedroloma.deporvillage.orders.events.StatusEvent;
+import com.pedroloma.deporvillage.orders.events.ChangeStatusEvent;
 
-//@Entity
 @Controller
+@Document
 public class Order implements ApplicationEventPublisherAware{
 
-	@javax.persistence.Id
-	private Long Id;
+	@Id
+	private Long id;
 	private BigDecimal totalAmount;
 	private Set<Item> items = new HashSet<Item>();
 	private Address addressShipping;
@@ -27,9 +29,9 @@ public class Order implements ApplicationEventPublisherAware{
 	public Order() {
 	}
 
-	public Order(Long Id, BigDecimal totalAmount, Item item, Address addressShipping, Address addressBilling) {
+	public Order(Long id, BigDecimal totalAmount, Item item, Address addressShipping, Address addressBilling) {
 		super();
-		this.Id = Id;
+		this.id = id;
 		this.totalAmount = totalAmount;
 		this.items.add(item);
 		this.addressShipping = addressShipping;
@@ -38,11 +40,11 @@ public class Order implements ApplicationEventPublisherAware{
 	}
 
 	public Long getId() {
-		return Id;
+		return id;
 	}
 
 	public void setId(Long id) {
-		Id = id;
+		this.id = id;
 	}
 
 	public BigDecimal getTotalAmount() {
@@ -83,13 +85,12 @@ public class Order implements ApplicationEventPublisherAware{
 
 	public void setStatus(Status status) {
 		this.status = status;
-//		StatusEvent event = new StatusEvent(this);
-//		publisher.publishEvent(event);
+//		publisher.publishEvent(new ChangeStatusEvent(this));
 	}
 
 	@Override
 	public String toString() {
-		return "Order [Id=" + Id + ", totalAmount=" + totalAmount + ", items=" + items + ", addressShipping="
+		return "Order [Id=" + id + ", totalAmount=" + totalAmount + ", items=" + items + ", addressShipping="
 				+ addressShipping + ", addressBilling=" + addressBilling + ", status=" + status + "]";
 	}
 
