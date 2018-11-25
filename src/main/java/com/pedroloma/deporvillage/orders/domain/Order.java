@@ -29,7 +29,6 @@ public class Order implements ApplicationEventPublisherAware{
 	private Address addressShipping;
 	private Address addressBilling;
 	private Status status;
-	
 
 	@Autowired
 	private ApplicationEventPublisher publisher;
