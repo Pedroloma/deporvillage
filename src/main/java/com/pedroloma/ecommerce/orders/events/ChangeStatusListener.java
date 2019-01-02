@@ -1,4 +1,4 @@
-package com.pedroloma.deporvillage.orders.events;
+package com.pedroloma.ecommerce.orders.events;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package com.pedroloma.deporvillage.orders.domain;
+package com.pedroloma.ecommerce.orders.domain;
 
 /**
  * TODO Falta implementar el detalle de esta clase.

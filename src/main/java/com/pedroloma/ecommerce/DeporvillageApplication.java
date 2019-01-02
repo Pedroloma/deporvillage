@@ -1,4 +1,4 @@
-package com.pedroloma.deporvillage;
+package com.pedroloma.ecommerce;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

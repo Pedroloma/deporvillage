@@ -1,9 +1,10 @@
-package com.pedroloma.deporvillage.orders.repository;
+package com.pedroloma.ecommerce.orders.repository;
 
 import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import com.pedroloma.deporvillage.orders.domain.Order;
-import com.pedroloma.deporvillage.orders.domain.Status;
+
+import com.pedroloma.ecommerce.orders.domain.Order;
+import com.pedroloma.ecommerce.orders.domain.Status;
 
 /**
  * Interface para la conexión con la base de datos MongoDB.

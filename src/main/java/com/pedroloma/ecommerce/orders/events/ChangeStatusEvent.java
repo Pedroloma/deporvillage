@@ -1,7 +1,8 @@
-package com.pedroloma.deporvillage.orders.events;
+package com.pedroloma.ecommerce.orders.events;
 
 import org.springframework.context.ApplicationEvent;
-import com.pedroloma.deporvillage.orders.domain.Order;
+
+import com.pedroloma.ecommerce.orders.domain.Order;
 
 /**
  * Evento que se lanza siempre que se cambia el status de una orden.

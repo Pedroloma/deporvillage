@@ -1,4 +1,4 @@
-package com.pedroloma.deporvillage.orders.domain;
+package com.pedroloma.ecommerce.orders.domain;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -11,7 +11,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Controller;
 
-import com.pedroloma.deporvillage.orders.events.ChangeStatusEvent;
+import com.pedroloma.ecommerce.orders.events.ChangeStatusEvent;
 
 /**
  * Clase Bean para los pedidos.

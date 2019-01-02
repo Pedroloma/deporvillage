@@ -1,4 +1,4 @@
-package com.pedroloma.deporvillage.orders.domain;
+package com.pedroloma.ecommerce.orders.domain;
 
 import java.math.BigDecimal;
 

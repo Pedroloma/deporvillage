@@ -1,4 +1,4 @@
-package com.pedroloma.deporvillage.orders.controllers;
+package com.pedroloma.ecommerce.orders.controllers;
 
 import java.net.URI;
 import java.util.List;
@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.pedroloma.deporvillage.orders.domain.Order;
-import com.pedroloma.deporvillage.orders.domain.OrderNotFoundException;
-import com.pedroloma.deporvillage.orders.domain.Status;
-import com.pedroloma.deporvillage.orders.repository.OrderRepository;
+import com.pedroloma.ecommerce.orders.domain.Order;
+import com.pedroloma.ecommerce.orders.domain.OrderNotFoundException;
+import com.pedroloma.ecommerce.orders.domain.Status;
+import com.pedroloma.ecommerce.orders.repository.OrderRepository;
 
 @RestController
 public class OrdersController {
